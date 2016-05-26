@@ -1,0 +1,29 @@
+// Create a collection named orders.
+ db.createCollection('orders');
+// Insert at least 3 documents that represent an order. IMPORTANT: See section below for fields.
+db.orders.insert([{"orderDate":new Date(), "orderTotal":100, "lineItems": [{"unitPrice": 2,"quantity":5, "productName":"thing"}]},{"orderDate":new Date(), "orderTotal":110, "lineItems": [{"unitPrice": 5,"quantity":3, "productName":"stuff"}]},{"orderDate":new Date(), "orderTotal":77, "lineItems": [{"unitPrice": 4,"quantity":9, "productName":"junk"}]}]);
+
+
+
+
+// Find a single order document, any order document.
+
+db.orders.findOne()
+// Find all orders and make them look pretty.
+db.orders.find().pretty()
+// Find all orders with an orderDate that is prior to 1/1/2016.
+> db.orders.find({
+  orderDate: {$lt: new Date("1/1/2016")}
+  })
+
+// Find all orders with an orderDate that is after 1/1/2016.
+> db.orders.find({
+  orderDate: {$gt: new Date("1/1/2016")}
+  })
+// Find orders with lineItems that have a quantity that is less than 50, but greater than 5. HINT: Look at $and.
+db.orders.find({"lineItems.quantity": {$gt: 5, $lt: 50}})
+
+// Update one of your line items to 42.99. HINT: Look at dot notation
+db.orders.update({"lineItems.productName" : "thing"}, {$set: {"lineItems.0.unitPrice": "42.99"}})
+// Remove one of your orders.
+db.orders.removeOne({})
